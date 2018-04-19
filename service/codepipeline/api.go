@@ -6865,6 +6865,102 @@ func (s PutThirdPartyJobSuccessResultOutput) GoString() string {
 	return s.String()
 }
 
+// A webhook filter rule. You can specify up to five of them when you
+// create a webhook.
+//
+// JsonPath and MatchEquals are both required.
+//
+// See https://docs.aws.amazon.com/codepipeline/latest/APIReference/API_WebhookFilterRule.html
+type WebhookFilterRule struct {
+	_ struct{} `type:"structure"`
+
+	JsonPath *string `locationName:"jsonPath" min:"1" type:"string" required:"true"`
+
+	MatchEquals *string `locationName:"matchEquals" min:"1" type:"string" required:"true"`
+}
+
+type WebhookDefinition struct {
+	_ struct{} `type:"structure"`
+
+	// The authentication mechanism for the webhook. Must be one of: GITHUB_HMAC,
+	// IP, or UNAUTHENTICATED.
+	//
+	// Authentication is a required field
+	Authentication *string `locationName:"authentication" min:"1" type:"string" required:"true"`
+
+	// A map of configuration variables for authentication.
+	//
+	// AuthenticationConfiguration is a required field.
+	AuthenticationConfiguration map[string]*string `locationName:"authenticationConfiguration" type:"map"`
+
+	// Apply branch filtering to the webhook.
+	//
+	// Maximum number of five rules.
+	Filters []*WebhookFilterRule `locationName:"filters" type:"list"`
+
+	// Name is a required field.
+	Name *string `locationName:"name" type:"string" required:"true"`
+
+	// The name of the action to trigger when this webhook is pinged.
+	//
+	// TargetAction is a required field.
+	TargetAction *string `locationName:"targetAction" type:"string" required:"true"`
+
+	// The name of the CodePipeline where the TargetAction can be found.
+	//
+	// TargetPipeline is a required field.
+	TargetPipeline *string `locationName:"targetPipeline" type:"string" required:"true"`
+}
+
+type PutWebhookInput struct {
+	_ struct{} `type:"structure"`
+
+	Webhook *WebhookDefinition `locationName:"webhook" type:"structure"`
+}
+
+// String returns the string representation
+func (s PutWebhookInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s PutWebhookInput) GoString() string {
+	return s.String()
+}
+
+type PutWebhookOutput struct {
+	_ struct{} `type:"structure"`
+
+	// The AWS ARN for the webhook.
+	WebhookArn *string `locationName:"arn" type:"string" required:"true"`
+
+	// The webhook's definition. Should have the same values as the input.
+	Definition *WebhookDefinition `locationName:"definition" type:"structure"`
+
+	// Error code, if any.
+	ErrorCode *string `locationName:"errorCode" type:"string" required:"true"`
+
+	// Error message, if any.
+	ErrorMessage *string `locationName:"errorMessage" type:"string" required:"true"`
+
+	// A timestamp of when the webhook was last triggered.
+	LastTriggered *time.Time `locationName:"lastTriggered" type:"timestamp" timestampFormat:"unix"`
+
+	// The URL of the webhook. This can be passed to clients that need to ping
+	// this webhook to trigger actions. For instance, a GitHub webhook.
+	Url *string `locationName:"url" min:"1" type:"string"`
+}
+
+// String returns the string representation
+func (s PutWebhookOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s PutWebhookOutput) GoString() string {
+	return s.String()
+}
+
 // Represents the input of a RetryStageExecution action.
 type RetryStageExecutionInput struct {
 	_ struct{} `type:"structure"`
